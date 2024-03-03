@@ -9,9 +9,9 @@ void RaceMode_Init(void);
 uint8_t Reflectance_Read(void);
 
 //interpret line sensor reading into usable data
-uint8_t Interpreter(void);
+uint8_t InterpretVal(void);
 
 //motor control
-void MotorsRun(uint32_t left, uint32_t right, uint8_t dir);
+void MotorsRun(uint32_t left, uint32_t right, uint8_t dir, uint32_t time);
 
 #endif
