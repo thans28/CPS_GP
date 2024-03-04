@@ -1,0 +1,5 @@
+3/4 @11am: Added interpreter function, changed FSM to add default ignore input for when the line sensors read something that we want to ignore --> made that the 0x00 input to the FSM - Tyler
+
+3/3: Added Reflance_Read & line sensor initializations in RaceMode_Init - Kushal
+
+3/1: Created baseline files & uploaded - Tyler
