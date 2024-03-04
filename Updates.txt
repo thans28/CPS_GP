@@ -5,3 +5,5 @@
 3/3: Added Reflance_Read & line sensor initializations in RaceMode_Init - Kushal
 
 3/1: Created baseline files & uploaded - Tyler
+
+3/4: Created files for hardware timer motor control, ask me if you need explanantion, but the lab 13 main code is a goood way to test this stuff out - Oday
