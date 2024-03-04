@@ -16,9 +16,9 @@
 
 struct State {
   uint8_t Dir; //indicate direction of each motor as 2 bit number XY where X is left & Y is right, 1 is forward & 0 is backward
-  uint16_t LeftM; //output for left motor, initially set to 16 bit for duty cycle
-  uint16_t RightM; //output for right motor, initially set to 16 bit for duty cycle
-  uint16_t Time;  // time to run
+  uint32_t LeftM; //output for left motor, initially set to 32 bit for PWM
+  uint32_t RightM; //output for right motor, initially set to 32 bit for PWM
+  uint32_t Time;  // time to run
   const struct State *Next[9];};// depends on 4-bit input
 
 typedef const struct State State_t;
@@ -62,8 +62,6 @@ int main(void){
                                // set lights to current state's Out value
     MotorsRun(Mode->LeftM,Mode->RightM,Mode->Dir,Mode->Time);
 
-    //Clock_Delay1ms(Mode->Time);  // wait 1 ms * current state's Time value - integrated into motor run function
-
-    Mode = Mode->Next[InterpretVal(Reflectance_Read())];      // transition to next state
+    Mode = Mode->Next[InterpretVal()];      // transition to next state
   }
 }
