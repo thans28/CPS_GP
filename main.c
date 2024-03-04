@@ -19,7 +19,7 @@ struct State {
   uint32_t LeftM; //output for left motor, initially set to 32 bit for PWM
   uint32_t RightM; //output for right motor, initially set to 32 bit for PWM
   uint32_t Time;  // time to run
-  const struct State *Next[8];};// depends on 4-bit input
+  const struct State *Next[9];};// depends on 4-bit input
 
 typedef const struct State State_t;
 
@@ -37,16 +37,16 @@ State_t FSM[10];
 #define Stop &FSM[9]
 
 FSM[10]={
- {0x03,9000,9000,1000,{Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x01,9000,9000,1000,{Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x02,9000,9000,1000,{Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x03,3000,9000,1000,{Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x03,9000,3000,1000,{Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x03,9000,7000,1000,{Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x03,7000,9000,1000,{Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x03,3000,3000,1000,{Lost,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x00,3000,3000,1000,{Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x00,0,0,10000,{Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop}}
+ {0x03,9000,9000,1000,{Center,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x01,9000,9000,1000,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x02,9000,9000,1000,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x03,3000,9000,1000,{SlightL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x03,9000,3000,1000,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x03,9000,7000,1000,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x03,7000,9000,1000,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x03,3000,3000,1000,{Err,Lost,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x00,3000,3000,1000,{Lost,Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x00,0,0,10000,{Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop}}
 };
 
 
@@ -55,6 +55,7 @@ int main(void){
 
   Clock_Init48MHz();              // initialize clock to 48MHz
   TExaS_Init(LOGICANALYZER_P4);
+  RaceMode_Init();
 
   Mode = Center;                    // initial state: dead center
   while(1){
