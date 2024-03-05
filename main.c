@@ -23,7 +23,7 @@ struct State {
 
 typedef const struct State State_t;
 
-
+uint16_t errCount = 0;
 
 #define Center &FSM[0]
 #define SharpL &FSM[1]
@@ -36,16 +36,18 @@ typedef const struct State State_t;
 #define Lost &FSM[8]
 #define Stop &FSM[9]
 
+#define scaler 80
+
 State_t FSM[10]={
- {0x08,7500,7500,700,{Center,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x02,5000,5000,700,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x04,5000,5000,700,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,3000,10000,700,{SlightL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,10000,3000,700,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,6500, 7000, 700,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,7000, 6500, 700,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,4500,4500,300000,{Err,Lost,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x01,4500,4500,500000,{Lost,Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,75*scaler,75*scaler,7*scaler,{Center,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x02,50*scaler,50*scaler,7*scaler,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x04,50*scaler,50*scaler,7*scaler,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,30*scaler, 80*scaler,7*scaler,{SlightL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,80*scaler,30*scaler,7*scaler,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,65*scaler, 70*scaler, 7*scaler,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,70*scaler, 65*scaler, 7*scaler,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,45*scaler,45*scaler,10*scaler,{Err,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x01,45*scaler,45*scaler,5000*scaler,{Lost,Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x00,0,0,1,{Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop}}
 };
 
@@ -61,6 +63,17 @@ int main(void){
   Mode = Center;                    // initial state: dead center
   while(MotorsRun(Mode->LeftM,Mode->RightM,Mode->Dir,Mode->Time)!=0x00){
 
+
     Mode = Mode->Next[InterpretVal()];      // transition to next state
+
+
+    if(Mode->Next[0] == Err){
+        errCount++;
+        if(errCount >= 500){
+            Mode = Lost;
+        }
+    }else{
+        errCount = 0;
+    }
   }
 }
