@@ -136,72 +136,19 @@ void PWM_Duty4(uint16_t duty4){
 
 }
 
-
-void Motor_Stop(void){
-    P5->OUT &=~0x30;
-    P2->OUT &=~0xC0;
-    P3->OUT &=~0xC0;
-}
-
-
-void Motor_Forward(uint16_t leftDuty, uint16_t rightDuty){
-  // write this as part of Lab 13
-    P5->OUT &=~0x30;
-    P2->OUT |= 0xC0;
-    P3->OUT |= 0xC0;
-    PWM_Duty3(rightDuty);
-    PWM_Duty4(leftDuty);
-}
-
-void Motor_Right(uint16_t leftDuty, uint16_t rightDuty){
-  // write this as part of Lab 13
-    P5->OUT &=~0x10;
-    P2->OUT |= 0x80;
-    P3->OUT |= 0x80;
-    P5->OUT |= 0x20;
-    P2->OUT |= 0x40;
-    P3->OUT |= 0x40;
-    PWM_Duty3(rightDuty);
-    PWM_Duty4(leftDuty);
-}
-
-
-void Motor_Left(uint16_t leftDuty, uint16_t rightDuty){
-  // write this as part of Lab 13
-    P5->OUT &=~0x20;
-    P2->OUT |= 0x40;
-    P3->OUT |= 0x40;
-    P5->OUT |= 0x10;
-    P2->OUT |= 0x80;
-    P3->OUT |= 0x80;
-    PWM_Duty3(rightDuty);
-    PWM_Duty4(leftDuty);
-}
-
-
-void Motor_Backward(uint16_t leftDuty, uint16_t rightDuty){
-  // write this as part of Lab 13
-    P5->OUT |= 0x30;
-    P2->OUT |= 0xC0;
-    P3->OUT |= 0xC0;
-    PWM_Duty3(rightDuty);
-    PWM_Duty4(leftDuty);
-}
-
-
 //motor control
-bool MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint16_t time){
+bool MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint32_t time){
+    bool keepGoing=true;
     switch (dir){
-        case 0b01:
+        case 0x01:
             // Reverse Mode
             P5->OUT |= 0x30;
             P2->OUT |= 0xC0;
             P3->OUT |= 0xC0;
             PWM_Duty3(right);
             PWM_Duty4(left);
-            return true;
             break;
-        case 0b10:
+        case 0x02:
             // Left Mode
             P5->OUT &=~0x20;
             P2->OUT |= 0x40;
@@ -211,9 +158,8 @@ bool MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint16_t time){
             P3->OUT |= 0x80;
             PWM_Duty3(right);
             PWM_Duty4(left);
-            return true;
             break;
-        case 0b100:
+        case 0x04:
             // Right Mode
             P5->OUT &=~0x10;
             P2->OUT |= 0x80;
@@ -223,22 +169,23 @@ bool MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint16_t time){
             P3->OUT |= 0x40;
             PWM_Duty3(right);
             PWM_Duty4(left);
-            return true;
             break;
-        case 0b1000:
+        case 0x08:
             // Forward
             P5->OUT &=~0x30;
             P2->OUT |= 0xC0;
             P3->OUT |= 0xC0;
             PWM_Duty3(right);
             PWM_Duty4(left);
-            return true;
             break;
         default:
             // Stop Motors, Return False
             P5->OUT &=~0x30;
             P2->OUT &=~0xC0;
             P3->OUT &=~0xC0;
-            return false;
+            keepGoing=false;
             break;
+    }
+    Clock_Delay1us(time);
+    return keepGoing;
 }
