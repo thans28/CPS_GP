@@ -1,3 +1,7 @@
+3/4 @8:30pm: Fixed switch cases and include statements across all files - Kushal
+
+3/4 @6pm: Created files for hardware timer motor control, ask me if you need explanantion, but the lab 13 main code is a goood way to test this stuff out - Oday
+
 3/4 @6:30pm: integrated PWM & motors into RaceMode
 
 3/4 @12pm: Reduced 32 bit values in FSM table to 16 bit to save memory - Tyler
@@ -7,7 +11,3 @@
 3/3: Added Reflance_Read & line sensor initializations in RaceMode_Init - Kushal
 
 3/1: Created baseline files & uploaded - Tyler
-
-3/4: Created files for hardware timer motor control, ask me if you need explanantion, but the lab 13 main code is a goood way to test this stuff out - Oday
-
-3/4: Fixed switch cases and include statements across all files - Kushal
