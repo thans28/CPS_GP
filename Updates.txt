@@ -1,3 +1,5 @@
+3/4 @11pm: Added MotorsRun, plus functioning code with some corner accuracy issues - Oday & Tyler
+
 3/4 @8:30pm: Fixed switch cases and include statements across all files - Kushal
 
 3/4 @6pm: Created files for hardware timer motor control, ask me if you need explanantion, but the lab 13 main code is a goood way to test this stuff out - Oday
