@@ -190,6 +190,6 @@ void Motor_Backward(uint16_t leftDuty, uint16_t rightDuty){
 
 
 //motor control
-void MotorsRun(uint32_t left, uint32_t right, uint8_t dir, uint32_t time){
+void MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint16_t time){
 
 }
