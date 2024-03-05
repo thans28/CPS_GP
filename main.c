@@ -11,8 +11,8 @@
 
 #include <stdint.h>
 #include "msp.h"
-#include "Clock.h"
-#include "TExaS.h"
+//#include "Clock.h"
+//#include "TExaS.h"
 
 struct State {
   uint8_t Dir; //indicate direction of each motor as 2 bit number XY where X is left & Y is right, 1 is forward & 0 is backward
@@ -44,8 +44,8 @@ State_t FSM[10]={
  {0x08,10000,4500,700,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x08,10000,6500,700,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x08,6500,10000,700,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,4500,4500,700,{Err,Lost,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x01,4500,4500,10000,{Lost,Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,4500,4500,300000,{Err,Lost,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x01,4500,4500,500000,{Lost,Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x00,0,0,1,{Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop}}
 };
 
@@ -53,8 +53,9 @@ State_t FSM[10]={
 int main(void){
   State_t *Mode;  // state pointer
 
-  Clock_Init48MHz();              // initialize clock to 48MHz
-  TExaS_Init(LOGICANALYZER_P4);
+  //Clock_Init48MHz();              // initialize clock to 48MHz
+  //TExaS_Init(LOGICANALYZER_P4);
+  //PeriodicTask2_Init(&LogicAnalyzer_P4,10000,5);
   RaceMode_Init();
 
   Mode = Center;                    // initial state: dead center

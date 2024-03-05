@@ -1,3 +1,5 @@
+3/5 @ 10:30am: Deleted extraneous files and integrated into raceInit, fixed some FSM States delay
+
 3/4 @11pm: Added MotorsRun, plus functioning code with some corner accuracy issues - Oday & Tyler
 
 3/4 @8:30pm: Fixed switch cases and include statements across all files - Kushal
