@@ -37,15 +37,15 @@ typedef const struct State State_t;
 #define Stop &FSM[9]
 
 State_t FSM[10]={
- {0x03,9000,9000,1000,{Center,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x01,9000,9000,1000,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x02,9000,9000,1000,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x03,3000,9000,1000,{SlightL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x03,9000,3000,1000,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x03,9000,7000,1000,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x03,7000,9000,1000,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x03,3000,3000,1000,{Err,Lost,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x00,3000,3000,1000,{Lost,Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,9000,9000,1000,{Center,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x02,9000,9000,1000,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x04,9000,9000,1000,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,3000,9000,1000,{SlightL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,9000,3000,1000,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,9000,7000,1000,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,7000,9000,1000,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,3000,3000,1000,{Err,Lost,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x01,3000,3000,1000,{Lost,Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x00,0,0,10000,{Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop}}
 };
 
@@ -58,9 +58,7 @@ int main(void){
   RaceMode_Init();
 
   Mode = Center;                    // initial state: dead center
-  while(1){
-                               // set lights to current state's Out value
-    MotorsRun(Mode->LeftM,Mode->RightM,Mode->Dir,Mode->Time);
+  while(MotorsRun(Mode->LeftM,Mode->RightM,Mode->Dir,Mode->Time)){
 
     Mode = Mode->Next[InterpretVal()];      // transition to next state
   }
