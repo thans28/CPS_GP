@@ -178,22 +178,22 @@ uint8_t InterpretVal(uint8_t data){
     case 0xE0:
     case 0xC0:
     case 0x80:
-    case 0x40:
         output = 0x03;
         break;
     case 0x0F: //right 4 sensors
     case 0x07:
     case 0x03:
     case 0x01:
-    case 0x02:
         output = 0x04;
         break;
-    case 0xC0:
+    case 0x40:
+    case 0x20:
     case 0x60: //two of the left sensors
         output = 0x05;
         break;
-    case 0x06:
-    case 0x03: //two of the right sensors
+    case 0x06: //two of the right sensors
+    case 0x02:
+    case 0x04:
         output = 0x06;
         break;
     case 0x30:
