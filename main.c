@@ -16,8 +16,8 @@
 
 struct State {
   uint8_t Dir; //indicate direction of each motor as 2 bit number XY where X is left & Y is right, 1 is forward & 0 is backward
-  uint32_t LeftM; //output for left motor, initially set to 32 bit for PWM
-  uint32_t RightM; //output for right motor, initially set to 32 bit for PWM
+  uint16_t LeftM; //output for left motor, initially set to 32 bit for PWM
+  uint16_t RightM; //output for right motor, initially set to 32 bit for PWM
   uint32_t Time;  // time to run
   const struct State *Next[9];};// depends on 4-bit input
 
