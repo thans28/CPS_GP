@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "msp432.h"
 #include "Clock.h"
-#include "CortexM.h"
+//#include "CortexM.h"
 
 //Initialize line sensors
 //Deploy battery saving techniques
@@ -65,7 +65,7 @@ uint8_t Reflectance_Read(void){
     Clock_Delay1us(10);   // wait 10 us
     P7->DIR = 0x00;       // make P7.7-P7.0 in
 
-    //-----ADD SOME SORT OF DELAY HERE--------
+    Clock_Delay1us(1000);
 
     P4->OUT = P7->IN&0xFF; // convert P7.0 input to digital
 
@@ -137,8 +137,8 @@ void PWM_Duty4(uint16_t duty4){
 }
 
 //motor control
-bool MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint32_t time){
-    bool keepGoing=true;
+uint8_t MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint32_t time){
+    uint8_t keepGoing=0x01;
     switch (dir){
         case 0x01:
             // Reverse Mode
@@ -183,7 +183,7 @@ bool MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint32_t time){
             P5->OUT &=~0x30;
             P2->OUT &=~0xC0;
             P3->OUT &=~0xC0;
-            keepGoing=false;
+            keepGoing=0x00;
             break;
     }
     Clock_Delay1us(time);
