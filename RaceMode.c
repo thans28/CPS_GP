@@ -190,6 +190,54 @@ void Motor_Backward(uint16_t leftDuty, uint16_t rightDuty){
 
 
 //motor control
-void MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint16_t time){
-
+bool MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint16_t time){
+    switch (dir){
+        case 0b01:
+            // Reverse Mode
+            P5->OUT |= 0x30;
+            P2->OUT |= 0xC0;
+            P3->OUT |= 0xC0;
+            PWM_Duty3(right);
+            PWM_Duty4(left);
+            return true;
+            break;
+        case 0b10:
+            // Left Mode
+            P5->OUT &=~0x20;
+            P2->OUT |= 0x40;
+            P3->OUT |= 0x40;
+            P5->OUT |= 0x10;
+            P2->OUT |= 0x80;
+            P3->OUT |= 0x80;
+            PWM_Duty3(right);
+            PWM_Duty4(left);
+            return true;
+            break;
+        case 0b100:
+            // Right Mode
+            P5->OUT &=~0x10;
+            P2->OUT |= 0x80;
+            P3->OUT |= 0x80;
+            P5->OUT |= 0x20;
+            P2->OUT |= 0x40;
+            P3->OUT |= 0x40;
+            PWM_Duty3(right);
+            PWM_Duty4(left);
+            return true;
+            break;
+        case 0b1000:
+            // Forward
+            P5->OUT &=~0x30;
+            P2->OUT |= 0xC0;
+            P3->OUT |= 0xC0;
+            PWM_Duty3(right);
+            PWM_Duty4(left);
+            return true;
+            break;
+        default:
+            P5->OUT &=~0x30;
+            P2->OUT &=~0xC0;
+            P3->OUT &=~0xC0;
+            return false;
+            break;
 }
