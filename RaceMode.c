@@ -235,6 +235,7 @@ bool MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint16_t time){
             return true;
             break;
         default:
+            // Stop Motors, Return False
             P5->OUT &=~0x30;
             P2->OUT &=~0xC0;
             P3->OUT &=~0xC0;
