@@ -175,9 +175,17 @@ uint8_t InterpretVal(uint8_t data){
         output = 0x02;
         break;
     case 0xF0: //left 4 sensors
+    case 0xE0:
+    case 0xC0:
+    case 0x80:
+    case 0x40:
         output = 0x03;
         break;
     case 0x0F: //right 4 sensors
+    case 0x07:
+    case 0x03:
+    case 0x01:
+    case 0x02:
         output = 0x04;
         break;
     case 0xC0:

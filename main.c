@@ -38,12 +38,12 @@ typedef const struct State State_t;
 
 State_t FSM[10]={
  {0x08,7500,7500,700,{Center,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x02,7500,7500,700,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x04,7500,7500,700,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,4500,10000,700,{SlightL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,10000,4500,700,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,10000,6500,700,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,6500,10000,700,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x02,5000,5000,700,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x04,5000,5000,700,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,3000,10000,700,{SlightL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,10000,3000,700,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,6500, 7000, 700,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,7000, 6500, 700,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x08,4500,4500,300000,{Err,Lost,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x01,4500,4500,500000,{Lost,Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x00,0,0,1,{Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop}}
