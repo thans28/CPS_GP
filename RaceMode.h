@@ -16,6 +16,6 @@ void PWM_Duty3(uint16_t duty3);
 void PWM_Duty4(uint16_t duty4);
 
 //motor control
-bool MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint32_t time);
+uint8_t MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint32_t time);
 
 #endif
