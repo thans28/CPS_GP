@@ -23,7 +23,7 @@ struct State {
 
 typedef const struct State State_t;
 
-State_t FSM[10];
+
 
 #define Center &FSM[0]
 #define SharpL &FSM[1]
@@ -36,7 +36,7 @@ State_t FSM[10];
 #define Lost &FSM[8]
 #define Stop &FSM[9]
 
-FSM[10]={
+State_t FSM[10]={
  {0x03,9000,9000,1000,{Center,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x01,9000,9000,1000,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x02,9000,9000,1000,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
