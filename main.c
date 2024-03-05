@@ -45,7 +45,7 @@ State_t FSM[10]={
  {0x08,10000,6500,700,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x08,6500,10000,700,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x08,4500,4500,700,{Err,Lost,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x01,4500,4500,700,{Lost,Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x01,4500,4500,10000,{Lost,Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x00,0,0,1,{Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop}}
 };
 
