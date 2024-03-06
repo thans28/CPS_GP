@@ -11,8 +11,6 @@
 
 #include <stdint.h>
 #include "msp.h"
-//#include "Clock.h"
-//#include "TExaS.h"
 
 struct State {
   uint8_t Dir; //indicate direction of each motor as 2 bit number XY where X is left & Y is right, 1 is forward & 0 is backward
@@ -24,6 +22,8 @@ struct State {
 typedef const struct State State_t;
 
 uint16_t errCount = 0;
+volatile uint8_t Bump = 0x00;
+volatile uint8_t numInts = 0;
 
 #define Center &FSM[0]
 #define SharpL &FSM[1]
@@ -51,21 +51,27 @@ State_t FSM[10]={
  {0x00,0,0,1,{Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop}}
 };
 
+State_t *Mode;  // state pointer
+
+void SysTick_Handler(void){
+    numInts++;
+
+    if(numInts==10){
+        Bump = (~(((P4->IN)&0x01) | (((P4->IN)&0x0C)>>1) | (((P4->IN)&0xE0)>>2)))&~0xC0;
+
+        if(Bump != 0x00){
+            Mode = Stop;
+        }
+    }
+}
 
 int main(void){
-  State_t *Mode;  // state pointer
-
-  //Clock_Init48MHz();              // initialize clock to 48MHz
-  //TExaS_Init(LOGICANALYZER_P4);
-  //PeriodicTask2_Init(&LogicAnalyzer_P4,10000,5);
   RaceMode_Init();
 
   Mode = Center;                    // initial state: dead center
   while(MotorsRun(Mode->LeftM,Mode->RightM,Mode->Dir,Mode->Time)!=0x00){
 
-
     Mode = Mode->Next[InterpretVal()];      // transition to next state
-
 
     if(Mode->Next[0] == Err){
         errCount++;
