@@ -1,4 +1,6 @@
-3/6 @12am: Added Bump and BatterySave, compiles correctly, don't know if it breaks the bot. If it does we can comment it out for now - Tyler
+3/6 @ 12:15pm: Split original scaler for FSM into motor scaler and time scaler
+
+3/6 @ 12am: Added Bump and BatterySave, compiles correctly, don't know if it breaks the bot. If it does we can comment it out for now - Tyler
 
 3/5 @ 6pm: Added scaling for PWM and delay for all states, added error tracking for increased resolution for error states
 
