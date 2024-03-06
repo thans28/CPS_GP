@@ -36,18 +36,19 @@ volatile uint8_t numInts = 0;
 #define Lost &FSM[8]
 #define Stop &FSM[9]
 
-#define scaler 80
+#define mScaler 80
+#define tScaler 80
 
 State_t FSM[10]={
- {0x08,75*scaler,75*scaler,7*scaler,{Center,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x02,50*scaler,50*scaler,7*scaler,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x04,50*scaler,50*scaler,7*scaler,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,30*scaler, 80*scaler,7*scaler,{SlightL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,80*scaler,30*scaler,7*scaler,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,65*scaler, 70*scaler, 7*scaler,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,70*scaler, 65*scaler, 7*scaler,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,45*scaler,45*scaler,10*scaler,{Err,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x01,45*scaler,45*scaler,5000*scaler,{Lost,Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,75*mscaler,75*mscaler,7*tscaler,{Center,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x02,50*mscaler,50*mscaler,7*tscaler,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x04,50*mscaler,50*mscaler,7*tscaler,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,30*mscaler, 80*mscaler,7*tscaler,{SlightL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,80*mscaler,30*mscaler,7*tscaler,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,65*mscaler, 70*mscaler, 7*tscaler,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,70*mscaler, 65*mscaler, 7*tscaler,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,45*mscaler,45*mscaler,10*tscaler,{Err,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x01,45*mscaler,45*mscaler,5000*tscaler,{Lost,Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x00,0,0,1,{Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop}}
 };
 
