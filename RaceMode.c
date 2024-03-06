@@ -136,6 +136,8 @@ void RaceMode_Init(void){
     P4->DIR &= ~0xED; // input
     P4->REN |= 0xED;
     P4->OUT |= 0xED; // pullup resistor
+
+    BatterySave();
 }
 
 void BatterySave(void){
