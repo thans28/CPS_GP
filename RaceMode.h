@@ -5,6 +5,9 @@
 //Deploy battery saving techniques
 void RaceMode_Init(void);
 
+//battery saving function
+void BatterySave(void);
+
 //extracted clock delay function - delay 1 us
 void Clock_Delay1us(uint32_t n);
 
