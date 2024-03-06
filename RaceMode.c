@@ -1,7 +1,5 @@
 #include <stdint.h>
 #include "msp432.h"
-//#include "Clock.h"
-//#include "CortexM.h"
 
 //Initialize line sensors
 //Deploy battery saving techniques
@@ -124,6 +122,26 @@ void RaceMode_Init(void){
     TIMER_A0->CCTL[4] = 0x0040;      // CCR4 toggle/reset
     TIMER_A0->CCR[4] = 0;        // CCR4 duty cycle is duty4/period
     TIMER_A0->CTL = 0x02F0;        // SMCLK=12MHz, divide by 8, up-down mode
+
+    //SysTick Init
+    SysTick->CTRL = 0;              // 1) disable SysTick during setup
+    SysTick->LOAD = 48000 - 1;     // 2) reload value sets period
+    SysTick->VAL = 0;               // 3) any write to current clears it
+    SCB->SHP[11] = 2<<5;     // set priority into top 3 bits of 8-bit register
+    SysTick->CTRL = 0x00000007;     // 4) enable SysTick with core clock and interrupts
+
+    //Bump Init
+    P4->SEL0 &= ~0xED;
+    P4->SEL1 &= ~0xED; // configure as GPIO
+    P4->DIR &= ~0xED; // input
+    P4->REN |= 0xED;
+    P4->OUT |= 0xED; // pullup resistor
+}
+
+void BatterySave(void){
+    P1->OUT = 0x00;
+    P6->OUT = 0x00;
+    P8->OUT &=~ 0xC0;
 }
 
 void Clock_Delay1us(uint32_t n){
