@@ -1,20 +1,22 @@
+3/6 @12am: Added Bump and BatterySave, compiles correctly, don't know if it breaks the bot. If it does we can comment it out for now - Tyler
+
 3/5 @ 6pm: Added scaling for PWM and delay for all states, added error tracking for increased resolution for error states
 
 3/5 @ 11:40am: Added more interpreter states for edge cases, altered some PWM values for tighter turning --- oops got rid of overlapping cases - Kushal
 
 3/5 @ 10:30am: Deleted extraneous files and integrated into raceInit, fixed some FSM States delay - Kushal
 
-3/4 @11pm: Added MotorsRun, plus functioning code with some corner accuracy issues - Oday & Tyler
+3/4 @ 11pm: Added MotorsRun, plus functioning code with some corner accuracy issues - Oday & Tyler
 
-3/4 @8:30pm: Fixed switch cases and include statements across all files - Kushal
+3/4 @ 8:30pm: Fixed switch cases and include statements across all files - Kushal
 
-3/4 @6pm: Created files for hardware timer motor control, ask me if you need explanantion, but the lab 13 main code is a goood way to test this stuff out - Oday
+3/4 @ 6pm: Created files for hardware timer motor control, ask me if you need explanantion, but the lab 13 main code is a goood way to test this stuff out - Oday
 
-3/4 @6:30pm: integrated PWM & motors into RaceMode
+3/4 @ 6:30pm: integrated PWM & motors into RaceMode
 
-3/4 @12pm: Reduced 32 bit values in FSM table to 16 bit to save memory - Tyler
+3/4 @ 12pm: Reduced 32 bit values in FSM table to 16 bit to save memory - Tyler
 
-3/4 @11am: Added interpreter function, changed FSM to add default ignore input for when the line sensors read something that we want to ignore --> made that the 0x00 input to the FSM - Tyler
+3/4 @ 11am: Added interpreter function, changed FSM to add default ignore input for when the line sensors read something that we want to ignore --> made that the 0x00 input to the FSM - Tyler
 
 3/3: Added Reflance_Read & line sensor initializations in RaceMode_Init - Kushal
 
