@@ -5,9 +5,6 @@
 //Deploy battery saving techniques
 void RaceMode_Init(void);
 
-//battery saving function
-void BatterySave(void);
-
 //extracted clock delay function - delay 1 us
 void Clock_Delay1us(uint32_t n);
 
@@ -22,6 +19,6 @@ void PWM_Duty3(uint16_t duty3);
 void PWM_Duty4(uint16_t duty4);
 
 //motor control
-uint8_t MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint32_t time);
+void MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint32_t time);
 
 #endif
