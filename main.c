@@ -11,20 +11,21 @@
 
 #include <stdint.h>
 #include "msp.h"
+#include "CortexM.h"
+#include "TExaS.h"
+#include "RaceMode.h"
 
 struct State {
   uint8_t Dir; //indicate direction of each motor as 2 bit number XY where X is left & Y is right, 1 is forward & 0 is backward
   uint16_t LeftM; //output for left motor, initially set to 32 bit for PWM
   uint16_t RightM; //output for right motor, initially set to 32 bit for PWM
   uint32_t Time;  // time to run
-  const struct State *Next[9];};// depends on 4-bit input
+  const struct State *Next[9];};// depends on 8-bit input
 
 typedef const struct State State_t;
 
 uint16_t errCount = 0;
 uint16_t lostCount = 0;
-volatile uint8_t Bump = 0x00;
-volatile uint8_t numInts = 0;
 
 #define Center &FSM[0]
 #define SharpL &FSM[1]
@@ -57,23 +58,40 @@ State_t FSM[10]={
 
 State_t *Mode;  // state pointer
 
-//void SysTick_Handler(void){
-//    numInts++;
-//
-//    if(numInts==10){
-//        Bump = (~(((P4->IN)&0x01) | (((P4->IN)&0x0C)>>1) | (((P4->IN)&0xE0)>>2)))&~0xC0;
-//
-//        if(Bump != 0x00){
-//            Mode = Stop;
-//        }
-//    }
-//}
+void HandleCollision(void){
+   Mode=Stop;
+}
+
+void BumpInt_Init(void(*task)(void)){
+    P4->SEL0 &= ~0xED;
+    P4->SEL1 &= ~0xED; // configure as GPIO
+    P4->DIR &= ~0xED; // input
+    P4->REN |= 0xED;
+    P4->OUT |= 0xED; // pullup resistor
+    P4->IES |= 0xED; //falling edge event
+    P4->IFG &= ~0xED; //clear flags
+    P4->IE |= 0xED; // arm interrupts
+    NVIC->IP[9] = (NVIC->IP[9]&0xFF00FFFF)|0x00000000; // priority 2
+    NVIC->ISER[1] = 0x00000040;        // enable interrupt 35 in NVIC
+}
+
+void PORT4_IRQHandler(void){
+    P4->IFG &= ~0xED; //clear flags
+    Mode = Stop;
+}
 
 int main(void){
   RaceMode_Init();
+  Mode = Center; // initial state: dead center
 
-  Mode = Center;                    // initial state: dead center
-  while(MotorsRun(Mode->LeftM,Mode->RightM,Mode->Dir,Mode->Time)!=0x00){
+  BumpInt_Init(&HandleCollision);
+  TExaS_Init(LOGICANALYZER_P4_765320);
+  EnableInterrupts();
+
+  while(1){
+    WaitForInterrupt();
+
+    MotorsRun(Mode->LeftM,Mode->RightM,Mode->Dir,Mode->Time);
 
     Mode = Mode->Next[InterpretVal()];      // transition to next state
 
