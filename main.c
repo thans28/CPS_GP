@@ -22,6 +22,7 @@ struct State {
 typedef const struct State State_t;
 
 uint16_t errCount = 0;
+uint16_t lostCount = 0;
 volatile uint8_t Bump = 0x00;
 volatile uint8_t numInts = 0;
 
@@ -36,35 +37,37 @@ volatile uint8_t numInts = 0;
 #define Lost &FSM[8]
 #define Stop &FSM[9]
 
-#define mScaler 80
-#define tScaler 80
+#define scaler 65 //60 is good
+#define timeScaler 80 //80 is good
+
+//center delay coeff - good = 4
 
 State_t FSM[10]={
- {0x08,75*mscaler,75*mscaler,7*tscaler,{Center,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x02,50*mscaler,50*mscaler,7*tscaler,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x04,50*mscaler,50*mscaler,7*tscaler,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,30*mscaler, 80*mscaler,7*tscaler,{SlightL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,80*mscaler,30*mscaler,7*tscaler,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,65*mscaler, 70*mscaler, 7*tscaler,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,70*mscaler, 65*mscaler, 7*tscaler,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,45*mscaler,45*mscaler,10*tscaler,{Err,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x01,45*mscaler,45*mscaler,5000*tscaler,{Lost,Stop,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,85*scaler,85*scaler,7*timeScaler,{Center,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x02,50*scaler,50*scaler,7*timeScaler,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x04,50*scaler,50*scaler,7*timeScaler,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,30*scaler, 80*scaler,7*timeScaler,{SlightL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,80*scaler,30*scaler, 7*timeScaler,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,65*scaler, 70*scaler, 7*timeScaler,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,70*scaler, 65*scaler, 7*timeScaler,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,45*scaler,45*scaler,10*timeScaler,{Err,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x01,85*scaler,75*scaler,10*timeScaler,{Lost,Lost,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x00,0,0,1,{Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop,Stop}}
 };
 
 State_t *Mode;  // state pointer
 
-void SysTick_Handler(void){
-    numInts++;
-
-    if(numInts==10){
-        Bump = (~(((P4->IN)&0x01) | (((P4->IN)&0x0C)>>1) | (((P4->IN)&0xE0)>>2)))&~0xC0;
-
-        if(Bump != 0x00){
-            Mode = Stop;
-        }
-    }
-}
+//void SysTick_Handler(void){
+//    numInts++;
+//
+//    if(numInts==10){
+//        Bump = (~(((P4->IN)&0x01) | (((P4->IN)&0x0C)>>1) | (((P4->IN)&0xE0)>>2)))&~0xC0;
+//
+//        if(Bump != 0x00){
+//            Mode = Stop;
+//        }
+//    }
+//}
 
 int main(void){
   RaceMode_Init();
@@ -76,11 +79,20 @@ int main(void){
 
     if(Mode->Next[0] == Err){
         errCount++;
-        if(errCount >= 500){
+        if(errCount >= 1000){
             Mode = Lost;
         }
     }else{
         errCount = 0;
     }
+
+    if(Mode->Next[0] == Lost){
+            lostCount++;
+            if(lostCount >= 1500){
+                Mode = Stop;
+            }
+        }else{
+            lostCount = 0;
+        }
   }
 }

@@ -123,19 +123,19 @@ void RaceMode_Init(void){
     TIMER_A0->CCR[4] = 0;        // CCR4 duty cycle is duty4/period
     TIMER_A0->CTL = 0x02F0;        // SMCLK=12MHz, divide by 8, up-down mode
 
-    //SysTick Init
-    SysTick->CTRL = 0;              // 1) disable SysTick during setup
-    SysTick->LOAD = 48000 - 1;     // 2) reload value sets period
-    SysTick->VAL = 0;               // 3) any write to current clears it
-    SCB->SHP[11] = 2<<5;     // set priority into top 3 bits of 8-bit register
-    SysTick->CTRL = 0x00000007;     // 4) enable SysTick with core clock and interrupts
-
-    //Bump Init
-    P4->SEL0 &= ~0xED;
-    P4->SEL1 &= ~0xED; // configure as GPIO
-    P4->DIR &= ~0xED; // input
-    P4->REN |= 0xED;
-    P4->OUT |= 0xED; // pullup resistor
+//    //SysTick Init
+//    SysTick->CTRL = 0;              // 1) disable SysTick during setup
+//    SysTick->LOAD = 48000 - 1;     // 2) reload value sets period
+//    SysTick->VAL = 0;               // 3) any write to current clears it
+//    SCB->SHP[11] = 2<<5;     // set priority into top 3 bits of 8-bit register
+//    SysTick->CTRL = 0x00000007;     // 4) enable SysTick with core clock and interrupts
+//
+//    //Bump Init
+//    P4->SEL0 &= ~0xED;
+//    P4->SEL1 &= ~0xED; // configure as GPIO
+//    P4->DIR &= ~0xED; // input
+//    P4->REN |= 0xED;
+//    P4->OUT |= 0xED; // pullup resistor
 
     BatterySave();
 }
@@ -189,41 +189,61 @@ uint8_t InterpretVal(uint8_t data){
     case 0xFF: //all sensors
         output = 0x01;
         break;
+
     case 0x18:
     case 0x10:
     case 0x08: //center 2 sensors
+    case 0x3C:
         output = 0x02;
         break;
+
+    case 0xFE:
+    case 0xFC:
+    case 0xF8:
     case 0xF0: //left 4 sensors
     case 0xE0:
     case 0xC0:
     case 0x80:
         output = 0x03;
         break;
+
+    case 0x7F:
+    case 0x3F:
+    case 0x1F:
     case 0x0F: //right 4 sensors
     case 0x07:
     case 0x03:
     case 0x01:
         output = 0x04;
         break;
+
     case 0x40:
     case 0x20:
     case 0x60: //two of the left sensors
+    case 0x70:
         output = 0x05;
         break;
+
+    case 0x0E:
     case 0x06: //two of the right sensors
     case 0x02:
     case 0x04:
         output = 0x06;
         break;
+
+
     case 0x30:
-    case 0x31: //two sensors just to the left of center
+    case 0x38: //two sensors just to the left of center
+    case 0x78:
         output = 0x07;
         break;
+
     case 0x0C:
+    case 0x1E:
     case 0x1C: //two sensors just to the right of center
         output = 0x08;
         break;
+
     default: // if we get something wonky, just ignore it and stay in the same state
         output = 0x00;
         break;

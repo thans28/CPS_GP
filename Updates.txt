@@ -1,4 +1,4 @@
-3/6 @ 12:15pm: Split original scaler for FSM into motor scaler and time scaler
+3/6 @ 7pm: Added lost counter, and tweaked lost state and center state pwm
 
 3/6 @ 12am: Added Bump and BatterySave, compiles correctly, don't know if it breaks the bot. If it does we can comment it out for now - Tyler
 
