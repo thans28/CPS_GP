@@ -10,6 +10,7 @@ uint32_t CPMwait = 0;
 uint32_t Postwait = 0;                  // loops between Current Power Mode matching requested mode and PCM module idle (expect about 0)
 uint32_t IFlags = 0;                    // non-zero if transition is invalid
 uint32_t Crystalstable = 0;
+char volatile LogicData;
 
 void RaceMode_Init(void){
     //Reflectance Init
@@ -123,28 +124,19 @@ void RaceMode_Init(void){
     TIMER_A0->CCR[4] = 0;        // CCR4 duty cycle is duty4/period
     TIMER_A0->CTL = 0x02F0;        // SMCLK=12MHz, divide by 8, up-down mode
 
-//    //SysTick Init
-//    SysTick->CTRL = 0;              // 1) disable SysTick during setup
-//    SysTick->LOAD = 48000 - 1;     // 2) reload value sets period
-//    SysTick->VAL = 0;               // 3) any write to current clears it
-//    SCB->SHP[11] = 2<<5;     // set priority into top 3 bits of 8-bit register
-//    SysTick->CTRL = 0x00000007;     // 4) enable SysTick with core clock and interrupts
-//
-//    //Bump Init
-//    P4->SEL0 &= ~0xED;
-//    P4->SEL1 &= ~0xED; // configure as GPIO
-//    P4->DIR &= ~0xED; // input
-//    P4->REN |= 0xED;
-//    P4->OUT |= 0xED; // pullup resistor
 
-    BatterySave();
-}
-
-void BatterySave(void){
-    P1->OUT = 0x00;
+    //Battery saving attempts
+    P6->SEL0 = 0x00;
+    P6->SEL1 = 0x00;
+    P6->DIR = 0XFF;
     P6->OUT = 0x00;
+
+    P8->SEL0 &= ~0xC0;
+    P8->SEL1 &= ~0xC0;
+    P8->DIR |= 0xC0;
     P8->OUT &=~ 0xC0;
 }
+
 
 void Clock_Delay1us(uint32_t n){
   n = (382*n)/100;; // 1 us, tuned at 48 MHz
@@ -157,10 +149,6 @@ void Clock_Delay1us(uint32_t n){
 uint8_t Reflectance_Read(void){
     uint8_t result;
 
-    P4->SEL0 &= ~0xFF;
-    P4->SEL1 &= ~0xFF;    //  P4.0 as GPIO
-    P4->DIR |= 0xFF;
-
     P5->OUT |= 0x08;      // turn on 4 even IR LEDs
     P9->OUT |= 0x04;
     P7->DIR = 0xFF;       // make P7.7-P7.0 out
@@ -170,12 +158,11 @@ uint8_t Reflectance_Read(void){
 
     Clock_Delay1us(1000);
 
-    P4->OUT = P7->IN&0xFF; // convert P7.0 input to digital
+    result = P7->IN; // convert P7.0 input to digital
 
     P5->OUT &= ~0x08;     // turn off 4 even IR LEDs
     P9->OUT &= ~0x04;
 
-    result = P4->OUT; // replace this line
     return result;
 }
 
@@ -194,6 +181,7 @@ uint8_t InterpretVal(uint8_t data){
     case 0x10:
     case 0x08: //center 2 sensors
     case 0x3C:
+    case 0x7E:
         output = 0x02;
         break;
 
@@ -268,8 +256,8 @@ void PWM_Duty4(uint16_t duty4){
 }
 
 //motor control
-uint8_t MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint32_t time){
-    uint8_t keepGoing=0x01;
+void MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint32_t time){
+    //uint8_t keepGoing=0x01;
     switch (dir){
         case 0x01:
             // Reverse Mode
@@ -314,9 +302,9 @@ uint8_t MotorsRun(uint16_t left, uint16_t right, uint8_t dir, uint32_t time){
             P5->OUT &=~0x30;
             P2->OUT &=~0xC0;
             P3->OUT &=~0xC0;
-            keepGoing=0x00;
+            //keepGoing=0x00;
             break;
     }
     Clock_Delay1us(time);
-    return keepGoing;
+    //return keepGoing;
 }
