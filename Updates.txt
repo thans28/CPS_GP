@@ -1,3 +1,5 @@
+3/7 @ 4am: Added bump stop, unfortunately requires TExaS and CortexM to function - Tyler
+
 3/6 @ 7pm: Added lost counter, and tweaked lost state and center state pwm
 
 3/6 @ 12am: Added Bump and BatterySave, compiles correctly, don't know if it breaks the bot. If it does we can comment it out for now - Tyler
