@@ -44,11 +44,11 @@ uint16_t lostCount = 0;
 //center delay coeff - good = 4
 
 State_t FSM[10]={
- {0x08,85*scaler,85*scaler,7*timeScaler,{Center,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x02,50*scaler,50*scaler,7*timeScaler,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x04,50*scaler,50*scaler,7*timeScaler,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,30*scaler, 80*scaler,7*timeScaler,{SlightL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
- {0x08,80*scaler,30*scaler, 7*timeScaler,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,85*scaler,85*scaler,5*timeScaler,{Center,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x02,50*scaler,50*scaler,6*timeScaler,{SharpL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x04,50*scaler,50*scaler,6*timeScaler,{SharpR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,30*scaler, 80*scaler,6*timeScaler,{SlightL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
+ {0x08,80*scaler,30*scaler, 6*timeScaler,{SlightR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x08,65*scaler, 70*scaler, 7*timeScaler,{CenterL,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x08,70*scaler, 65*scaler, 7*timeScaler,{CenterR,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
  {0x08,45*scaler,45*scaler,10*timeScaler,{Err,Err,Center,SharpL,SharpR,SlightL,SlightR,CenterL,CenterR}},
@@ -97,7 +97,7 @@ int main(void){
 
     if(Mode->Next[0] == Err){
         errCount++;
-        if(errCount >= 1000){
+        if(errCount >= 500){
             Mode = Lost;
         }
     }else{
